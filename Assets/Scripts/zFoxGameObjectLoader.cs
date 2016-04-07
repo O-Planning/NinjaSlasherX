@@ -90,7 +90,7 @@ public class zFoxGameObjectLoader : MonoBehaviour {
 					goInstance.name = go.name;
 					goInstance.transform.parent = gameObject.transform;
 					loadedGameObjectList.Add(go.name,goInstance);
-					Debug.Log(string.Format("Loaded GameObject {0}",go.name));
+					Debug.LogFormat("Loaded GameObject {0}",go.name);
 				}
 			}
 		}

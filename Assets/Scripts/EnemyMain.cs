@@ -127,13 +127,13 @@ public class EnemyMain : MonoBehaviour {
 				// カメラに映っていない
 				enemyCtrl.ActionMove (0.0f);
 				enemyCtrl.cameraRendered 	= false;
-				enemyCtrl.animator.enabled 	= false;
-				GetComponent<Rigidbody2D>().Sleep ();
+				enemyCtrl._animator.enabled = false;
+				enemyCtrl._rigidbody2D.Sleep ();
 				enemyCtrl.groundCheckWork = false;
 				return false;
 			}
 		}
-		enemyCtrl.animator.enabled 	= true;
+		enemyCtrl._animator.enabled = true;
 		enemyCtrl.cameraRendered 	= true;
 
 
@@ -170,7 +170,7 @@ public class EnemyMain : MonoBehaviour {
 
 	public bool CheckAction() {
 		// 状態チェック
-		AnimatorStateInfo stateInfo = enemyCtrl.animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo stateInfo = enemyCtrl._animator.GetCurrentAnimatorStateInfo(0);
 
 		if (stateInfo.tagHash  == EnemyController.ANITAG_ATTACK ||
 			stateInfo.fullPathHash == EnemyController.ANISTS_DMG_A ||

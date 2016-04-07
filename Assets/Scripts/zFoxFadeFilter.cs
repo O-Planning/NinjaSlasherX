@@ -94,6 +94,6 @@ public class zFoxFadeFilter : MonoBehaviour {
 			SetFadeFilterColor(true,fadeColor);
 			break;
 		}
-		// Debug.Log (string.Format ("[FoxFadeFilter] fadeState:{0} fadeColor:{1},fadeTime:{2}", fadeState, fadeColor,fadeTime));
+	// Debug.LogFormat ("[FoxFadeFilter] fadeState:{0} fadeColor:{1},fadeTime:{2}", fadeState, fadeColor,fadeTime);
 	}
 }

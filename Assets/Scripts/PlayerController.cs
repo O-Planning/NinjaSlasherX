@@ -91,8 +91,8 @@ public class PlayerController : BaseCharacterController {
 		Debug.Log (">>> ANITAG_ATTACK_A : " + ANISTS_ATTACK_A);
 		Debug.Log (">>> ANITAG_ATTACK_B : " + ANISTS_ATTACK_B);
 		Debug.Log (">>> ANITAG_ATTACK_C : " + ANISTS_ATTACK_C);
-		Debug.Log(string.Format("0 -> {0}",playerAnim.GetLayerName (0)));
-		Debug.Log(string.Format("1 -> {0}",playerAnim.GetLayerName (1)));
+		Debug.LogFormat("0 -> {0}",playerAnim.GetLayerName (0));
+		Debug.LogFormat("1 -> {0}",playerAnim.GetLayerName (1));
 #endif
 
 		// !!! ガベコレ強制実行 !!!
@@ -228,26 +228,26 @@ public class PlayerController : BaseCharacterController {
 
 	protected override void FixedUpdateCharacter () {
 		// 現在のステートを取得
-		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
 		// 着地チェック
 		if (jumped) {
 			if ((grounded && !groundedPrev) || 
 				(grounded && Time.fixedTime > jumpStartTime + 1.0f)) {
-				animator.SetTrigger ("Idle");
+				_animator.SetTrigger ("Idle");
 				jumped 	  = false;
 				jumpCount = 0;
-				GetComponent<Rigidbody2D>().gravityScale = gravityScale;
+				_rigidbody2D.gravityScale = gravityScale;
 			}
 			if (Time.fixedTime > jumpStartTime + 1.0f) {
 				if (stateInfo.fullPathHash == ANISTS_Idle || stateInfo.fullPathHash == ANISTS_Walk || 
 					stateInfo.fullPathHash == ANISTS_Run  || stateInfo.fullPathHash == ANISTS_Jump) {
-					GetComponent<Rigidbody2D>().gravityScale = gravityScale;
+					_rigidbody2D.gravityScale = gravityScale;
 				}
 			}
 		} else {
 			jumpCount = 0;
-			GetComponent<Rigidbody2D>().gravityScale = gravityScale;
+			_rigidbody2D.gravityScale = gravityScale;
 		}
 
 		// 攻撃中か？
@@ -296,7 +296,7 @@ public class PlayerController : BaseCharacterController {
 	public void SetNextAttack(string name) {
 		if (atkInputNow == true) {
 			atkInputNow = false;
-			animator.Play(name);
+			_animator.Play(name);
 		}
 	}
 
@@ -312,7 +312,7 @@ public class PlayerController : BaseCharacterController {
 
 		// アニメーション指定
 		float moveSpeed = Mathf.Clamp(Mathf.Abs (n),-1.0f,+1.0f);
-		animator.SetFloat("MovSpeed",moveSpeed);
+		_animator.SetFloat("MovSpeed",moveSpeed);
 		//animator.speed = 1.0f + moveSpeed;
 
 		// 移動チェック
@@ -333,16 +333,16 @@ public class PlayerController : BaseCharacterController {
 	}
 
 	public void ActionJump() {
-		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 		if ( stateInfo.fullPathHash == ANISTS_Idle || 
 			 stateInfo.fullPathHash == ANISTS_Walk || stateInfo.fullPathHash == ANISTS_Run || 
-			(stateInfo.fullPathHash == ANISTS_Jump && GetComponent<Rigidbody2D>().gravityScale >= gravityScale)) {
+			(stateInfo.fullPathHash == ANISTS_Jump && _rigidbody2D.gravityScale >= gravityScale)) {
 			switch(jumpCount) {
 			case 0 :
 				if (grounded) {
-					animator.SetTrigger ("Jump");
-					//rigidbody2D.AddForce (new Vector2 (0.0f, 1500.0f));	// Bug
-					GetComponent<Rigidbody2D>().velocity = Vector2.up * 30.0f;
+					_animator.SetTrigger ("Jump");
+					//_rigidbody2D.AddForce (new Vector2 (0.0f, 1500.0f));	// Bug
+					_rigidbody2D.velocity = Vector2.up * 30.0f;
 					jumpStartTime = Time.fixedTime;
 					jumped = true;
 					jumpCount ++;
@@ -350,29 +350,29 @@ public class PlayerController : BaseCharacterController {
 				break;
 			case 1 :
 				if (!grounded) {
-					animator.Play("Player_Jump",0,0.0f);
-					GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x,20.0f);
+					_animator.Play("Player_Jump",0,0.0f);
+					_rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x,20.0f);
 					jumped = true;
 					jumpCount ++;
 				}
 				break;
 			}
-			//Debug.Log(string.Format("Jump 1 {0} {1} {2} {3}",jumped,transform.position,grounded,groundedPrev));
+			//Debug.LogFormat("Jump 1 {0} {1} {2} {3}",jumped,transform.position,grounded,groundedPrev);
 			//Debug.Log(groundCheckCollider[1].name);
 			AppSound.instance.SE_MOV_JUMP.Play ();
 		}
 	}
 
 	public void ActionAttack() {
-		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 		if (stateInfo.fullPathHash == ANISTS_Idle || 
 			stateInfo.fullPathHash == ANISTS_Walk || stateInfo.fullPathHash == ANISTS_Run || 
 			stateInfo.fullPathHash == ANISTS_Jump || stateInfo.fullPathHash == ANISTS_ATTACK_C) {
 
-			animator.SetTrigger ("Attack_A");
+			_animator.SetTrigger ("Attack_A");
 			if (stateInfo.fullPathHash == ANISTS_Jump || stateInfo.fullPathHash == ANISTS_ATTACK_C) {
-				GetComponent<Rigidbody2D>().velocity     = new Vector2(0.0f,0.0f);
-				GetComponent<Rigidbody2D>().gravityScale = 0.1f;
+				_rigidbody2D.velocity     = new Vector2(0.0f,0.0f);
+				_rigidbody2D.gravityScale = 0.1f;
 			}
 		} else {
 			if (atkInputEnabled) {
@@ -383,12 +383,12 @@ public class PlayerController : BaseCharacterController {
 	}
 
 	public void ActionAttackJump() {
-		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 		if (grounded && 
 			(stateInfo.fullPathHash == ANISTS_Idle || 
 				stateInfo.fullPathHash == ANISTS_Walk || stateInfo.fullPathHash == ANISTS_Run ||
 				stateInfo.fullPathHash == ANISTS_ATTACK_A || stateInfo.fullPathHash == ANISTS_ATTACK_B)) {
-			animator.SetTrigger ("Attack_C");
+			_animator.SetTrigger ("Attack_C");
 			jumpCount = 2;
 		} else {
 			if (atkInputEnabled) {
@@ -444,9 +444,9 @@ public class PlayerController : BaseCharacterController {
 		Handheld.Vibrate();
 #endif
 
-		animator.SetTrigger ("DMG_A");
+		_animator.SetTrigger ("DMG_A");
 		speedVx = 0;
-		GetComponent<Rigidbody2D>().gravityScale = gravityScale;
+		_rigidbody2D.gravityScale = gravityScale;
 
 		// Combo Reset
 		comboCount = 0;
@@ -464,7 +464,7 @@ public class PlayerController : BaseCharacterController {
 	// === コード（その他） ====================================
 	public override void Dead(bool gameOver) {
 		// 死亡処理をしてもいいか？
-		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 		if (!activeSts || stateInfo.fullPathHash == ANISTS_DEAD) {
 			return;
 		}

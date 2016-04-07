@@ -56,7 +56,7 @@ public class PlayerMain : MonoBehaviour {
 			if (Input.GetAxisRaw ("Vertical") + vpad_vertical < 0.5f) {
 				playerCtrl.ActionAttack();
 			} else {
-				//Debug.Log (string.Format ("Vertical {0} {1}",Input.GetAxisRaw ("Vertical"),vp.vertical));
+				//Debug.LogFormat ("Vertical {0} {1}",Input.GetAxisRaw ("Vertical"),vp.vertical);
 				playerCtrl.ActionAttackJump();
 			}
 			return;

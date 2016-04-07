@@ -60,6 +60,9 @@ public class StageTrigger_EventObject : MonoBehaviour {
 	// === 外部パラメータ ======================================
 	[System.NonSerialized] public bool triggerOn = false;
 
+	// === キャッシュ ==========================================
+	[System.NonSerialized] public Rigidbody2D	_rigidbody2D;
+
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	void OnTriggerEnter2D_PlayerEvent (GameObject go) {
@@ -69,48 +72,49 @@ public class StageTrigger_EventObject : MonoBehaviour {
 	void runTriggerWork() {
 
 		if (rigidbody2DParam.enabled) {
-			if (gameObject.GetComponent<Rigidbody2D> () == null) {
-				gameObject.AddComponent<Rigidbody2D> ();
+			_rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+			if (_rigidbody2D == null) {
+				_rigidbody2D = gameObject.AddComponent<Rigidbody2D> ();
 			}
 
-			gameObject.GetComponent<Rigidbody2D>().mass 				= rigidbody2DParam.mass;
-			gameObject.GetComponent<Rigidbody2D>().drag 				= rigidbody2DParam.linearDrag;
-			gameObject.GetComponent<Rigidbody2D>().angularDrag 			= rigidbody2DParam.angularDrag;
-			gameObject.GetComponent<Rigidbody2D>().gravityScale 		= rigidbody2DParam.gravityScale;
+			_rigidbody2D.mass 				= rigidbody2DParam.mass;
+			_rigidbody2D.drag 				= rigidbody2DParam.linearDrag;
+			_rigidbody2D.angularDrag 		= rigidbody2DParam.angularDrag;
+			_rigidbody2D.gravityScale 		= rigidbody2DParam.gravityScale;
 
-//			gameObject.GetComponent<Rigidbody2D>().fixedAngle 			= rigidbody2DParam.fixedAngle;	// Unity Ver 4.x
-			gameObject.GetComponent<Rigidbody2D>().freezeRotation 		= rigidbody2DParam.freezeRotation;
-			gameObject.GetComponent<Rigidbody2D>().inertia 				= rigidbody2DParam.inertia;
-			gameObject.GetComponent<Rigidbody2D>().constraints 			= rigidbody2DParam.constraints;
+//			_rigidbody2D.fixedAngle 		= rigidbody2DParam.fixedAngle;	// Unity Ver 4.x
+			_rigidbody2D.freezeRotation 	= rigidbody2DParam.freezeRotation;
+			_rigidbody2D.inertia 			= rigidbody2DParam.inertia;
+			_rigidbody2D.constraints 		= rigidbody2DParam.constraints;
 
-			gameObject.GetComponent<Rigidbody2D>().isKinematic 			= rigidbody2DParam.isKinematic;
-			gameObject.GetComponent<Rigidbody2D>().interpolation 		= rigidbody2DParam.interpolation;
-			gameObject.GetComponent<Rigidbody2D>().sleepMode 			= rigidbody2DParam.sleepMode;
-			gameObject.GetComponent<Rigidbody2D>().collisionDetectionMode 	= rigidbody2DParam.collisionDetection;
+			_rigidbody2D.isKinematic 		= rigidbody2DParam.isKinematic;
+			_rigidbody2D.interpolation 		= rigidbody2DParam.interpolation;
+			_rigidbody2D.sleepMode 			= rigidbody2DParam.sleepMode;
+			_rigidbody2D.collisionDetectionMode 	= rigidbody2DParam.collisionDetection;
 
-			gameObject.GetComponent<Rigidbody2D>().centerOfMass 		= rigidbody2DParam.centerOfMass;
-			gameObject.GetComponent<Rigidbody2D>().velocity				= rigidbody2DParam.velocity;
-			gameObject.GetComponent<Rigidbody2D>().angularVelocity 		= rigidbody2DParam.angularVelocity;
+			_rigidbody2D.centerOfMass 		= rigidbody2DParam.centerOfMass;
+			_rigidbody2D.velocity			= rigidbody2DParam.velocity;
+			_rigidbody2D.angularVelocity 	= rigidbody2DParam.angularVelocity;
 
 			if (rigidbody2DParam.addForceEnabled) {
 				gameObject.GetComponent<Rigidbody2D>().AddForce(rigidbody2DParam.addForcePower);
 			}
 			if (rigidbody2DParam.addForceAtPositionEnabled) {
-				gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(
+				_rigidbody2D.AddForceAtPosition(
 					rigidbody2DParam.addForceAtPositionPower,
 					rigidbody2DParam.addForceAtPositionObject.transform.position);
 			}
 			if (rigidbody2DParam.addRelativeForceEnabled) {
-				gameObject.GetComponent<Rigidbody2D>().AddRelativeForce(rigidbody2DParam.addRelativeForcePower);
+				_rigidbody2D.AddRelativeForce(rigidbody2DParam.addRelativeForcePower);
 			}
 			if (rigidbody2DParam.addTorqueEnabled) {
-				gameObject.GetComponent<Rigidbody2D>().AddTorque(rigidbody2DParam.addTorquePower);
+				_rigidbody2D.AddTorque(rigidbody2DParam.addTorquePower);
 			}
 			if (rigidbody2DParam.movePositionEnabled) {
-				gameObject.GetComponent<Rigidbody2D>().MovePosition(rigidbody2DParam.movePosition);
+				_rigidbody2D.MovePosition(rigidbody2DParam.movePosition);
 			}
 			if (rigidbody2DParam.moveRotationEnabled) {
-				gameObject.GetComponent<Rigidbody2D>().MoveRotation(rigidbody2DParam.moveRotation);
+				_rigidbody2D.MoveRotation(rigidbody2DParam.moveRotation);
 			}
 		}
 

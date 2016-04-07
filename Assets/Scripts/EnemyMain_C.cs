@@ -26,7 +26,7 @@ public class EnemyMain_C : EnemyMain {
 		enemyCtrl.ActionMoveToFar (player, aiPlayerEscapeDistance);
 
 		// AIステート
-//		Debug.Log (string.Format(">>> aists {0}",aiState)); // 常に表示すると遅くなるので注意
+		//Debug.LogFormat (">>> aists {0}",aiState);
 		switch (aiState) {
 		case ENEMYAISTS.ACTIONSELECT	: // 思考の起点
 			// アクションの選択

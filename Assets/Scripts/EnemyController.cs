@@ -41,11 +41,11 @@ public class EnemyController : BaseCharacterController {
 		Debug.Log (">>> ANISTS_DMG_A : " + ANISTS_DMG_A);
 		Debug.Log (">>> ANISTS_DMG_B : " + ANISTS_DMG_B);
 		Debug.Log (">>> ANISTS_Dead : " + ANISTS_Dead);
-		Debug.Log(string.Format("0 -> {0}",animator.GetLayerName (0)));
-		Debug.Log(string.Format("1 -> {0}",animator.GetLayerName (1)));
+		Debug.LogFormat("0 -> {0}",animator.GetLayerName (0));
+		Debug.LogFormat("1 -> {0}",animator.GetLayerName (1));
 #endif
 		playerCtrl 	= PlayerController.GetController();
-		playerAnim 	= playerCtrl.GetComponent<Animator>();
+		playerAnim 	= playerCtrl._animator;
 
 		hpMax 	= initHpMax;
 		hp 		= hpMax;
@@ -56,7 +56,7 @@ public class EnemyController : BaseCharacterController {
 		base.Start ();
 
 //		playerCtrl 	= PlayerController.GetController();
-//		playerAnim 	= playerCtrl.GetComponent<Animator>();
+//		playerAnim 	= playerCtrl._animator;
 
 		seAnimationList = new AudioSource[5];
 		seAnimationList [0] = AppSound.instance.SE_ATK_B1;
@@ -79,32 +79,32 @@ public class EnemyController : BaseCharacterController {
 				jumped = false;
 			}
 			if (Time.fixedTime > jumpStartTime + 1.0f) {
-				if (GetComponent<Rigidbody2D>().gravityScale < gravityScale) {
-					GetComponent<Rigidbody2D>().gravityScale = gravityScale;
+				if (_rigidbody2D.gravityScale < gravityScale) {
+					_rigidbody2D.gravityScale = gravityScale;
 				}
 			}
 		} else {
-			GetComponent<Rigidbody2D>().gravityScale = gravityScale;
+			_rigidbody2D.gravityScale = gravityScale;
 		}
 
 		// キャラの方向
 		transform.localScale = new Vector3 (basScaleX * dir, transform.localScale.y, transform.localScale.z);
 
 		// Memo:空中ダメージではX移動を禁止
-		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 		if (stateInfo.fullPathHash == EnemyController.ANISTS_DMG_A ||
 			stateInfo.fullPathHash == EnemyController.ANISTS_DMG_B ||
 			stateInfo.fullPathHash == EnemyController.ANISTS_Dead) {
 			speedVx = 0.0f;
-			GetComponent<Rigidbody2D>().velocity = new Vector2 (0.0f, GetComponent<Rigidbody2D>().velocity.y);
+			_rigidbody2D.velocity = new Vector2 (0.0f, _rigidbody2D.velocity.y);
 		}
 	}
 
 	// === コード（基本アクション） =============================
 	public bool ActionJump() {
 		if (jumpActionEnabled && grounded && !jumped) {
-			animator.SetTrigger ("Jump");
-			GetComponent<Rigidbody2D>().AddForce (jumpPower);
+			_animator.SetTrigger ("Jump");
+			_rigidbody2D.AddForce (jumpPower);
 			jumped 		  = true;
 			jumpStartTime = Time.fixedTime;
 		}
@@ -114,7 +114,7 @@ public class EnemyController : BaseCharacterController {
 	public void ActionAttack(string atkname,int damage) {
 		attackEnabled = true;
 		attackDamage  = damage;
-		animator.SetTrigger (atkname);
+		_animator.SetTrigger (atkname);
 	}
 
 	public void ActionDamage() {
@@ -125,35 +125,35 @@ public class EnemyController : BaseCharacterController {
 		}
 
 		if (superArmor) {
-			animator.SetTrigger ("SuperArmor");
+			_animator.SetTrigger ("SuperArmor");
 		}
 
 		AnimatorStateInfo stateInfo = playerAnim.GetCurrentAnimatorStateInfo(0);
 		if (stateInfo.fullPathHash == PlayerController.ANISTS_ATTACK_C) {
 			damage = 3;
 			if (!superArmor || superArmor_jumpAttackDmg) {
-				animator.SetTrigger ("DMG_B");
+				_animator.SetTrigger ("DMG_B");
 				jumped 			= true;
 				jumpStartTime 	= Time.fixedTime;
 				AddForceAnimatorVy (1500.0f);
-				Debug.Log(string.Format(">>> DMG_B Jump {0}",stateInfo.fullPathHash));
+				Debug.LogFormat(">>> DMG_B Jump {0}",stateInfo.fullPathHash);
 			}
 		} else
 		if (!grounded) {
 			damage = 2;
 			if (!superArmor || superArmor_jumpAttackDmg) {
-				animator.SetTrigger ("DMG_B");
+				_animator.SetTrigger ("DMG_B");
 				jumped 			= true;
 				jumpStartTime 	= Time.fixedTime;
 				//AddForceAnimatorVy (10.0f);
-				playerCtrl.GetComponent<Rigidbody2D>().AddForce(new Vector2(0.0f,20.0f));
-				Debug.Log(string.Format(">>> DMG_B {0}",stateInfo.fullPathHash));
+				playerCtrl._rigidbody2D.AddForce(new Vector2(0.0f,20.0f));
+				Debug.LogFormat(">>> DMG_B {0}",stateInfo.fullPathHash);
 			}
 		} else {
 			damage = 1;
 			if (!superArmor) {
-				animator.SetTrigger ("DMG_A");
-				Debug.Log(string.Format(">>> DMG_A {0}",stateInfo.fullPathHash));
+				_animator.SetTrigger ("DMG_A");
+				Debug.LogFormat(">>> DMG_A {0}",stateInfo.fullPathHash);
 			}
 		}
 

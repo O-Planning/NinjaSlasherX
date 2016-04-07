@@ -26,7 +26,7 @@ public class zFoxScreenAjust : MonoBehaviour {
 
 	void ScreenAjust() {
 		float wh = (float)Screen.width / (float)Screen.height;
-		//Debug.Log (string.Format("asepectWH:{0} wh:{1}",asepectWH,wh));
+		//Debug.LogFormat ("asepectWH:{0} wh:{1}",asepectWH,wh);
 		if (wh < asepectWH) {
 			transform.localScale = new Vector3(localScale.x - (asepectWH - wh) + asepectAdd,
 			                                   localScale.y,

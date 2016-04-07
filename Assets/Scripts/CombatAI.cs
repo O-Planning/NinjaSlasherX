@@ -18,14 +18,14 @@ public class CombatAI : MonoBehaviour {
 			return;
 		}
 		foreach (GameObject enemy in enemyList) {
-			//Debug.Log (string.Format(">>> obj Name {0} position {1}",enemy.name,enemy.transform.position));
+			//Debug.LogFormat (">>> obj Name {0} position {1}",enemy.name,enemy.transform.position);
 			EnemyMain enemyMain = enemy.GetComponent<EnemyMain> ();
 			if (enemyMain != null) {
 				if (enemyMain.combatAIOerder && enemyMain.cameraEnabled) {
 					activeEnemyMainList.Add (enemyMain);
 				}
 			} else {
-				Debug.LogWarning(string.Format("CombatAI : EnemyMain null : {0} {1}",enemy.name,enemy.transform.position));
+				Debug.LogWarningFormat("CombatAI : EnemyMain null : {0} {1}",enemy.name,enemy.transform.position);
 			}
 		}
 
@@ -49,6 +49,6 @@ public class CombatAI : MonoBehaviour {
 			i ++;
 		}
 
-		//Debug.Log(string.Format(">>> Combat AI {0}",i));
+		//Debug.LogFormat(">>> Combat AI {0}",i);
 	}
 }

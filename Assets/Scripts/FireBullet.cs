@@ -46,6 +46,9 @@ public class FireBullet : MonoBehaviour {
 	Quaternion			homingRotate;
 	float 				speed;
 
+	// === キャッシュ ==========================================
+	[System.NonSerialized] public Rigidbody2D	_rigidbody2D;
+
 	// === コード（Monobehaviour基本機能の実装） ================
 	void Start() {
 		// オーナーチェック
@@ -54,6 +57,7 @@ public class FireBullet : MonoBehaviour {
 		}
 
 		// 初期化
+		_rigidbody2D	= GetComponent<Rigidbody2D>();
 		targetObject 	= PlayerController.GetGameObject();
 		posTarget 		= targetObject.transform.position + new Vector3 (0.0f, 1.0f, 0.0f);
 
@@ -116,7 +120,7 @@ public class FireBullet : MonoBehaviour {
 		// ホーミング処理
 		switch(fireType) {
 		case FIREBULLET.ANGLE 	 : // 指定した角度に発射
-			GetComponent<Rigidbody2D>().velocity = Quaternion.Euler (0.0f,0.0f,angle) * new Vector3 (speed, 0.0f, 0.0f);
+			_rigidbody2D.velocity = Quaternion.Euler (0.0f,0.0f,angle) * new Vector3 (speed, 0.0f, 0.0f);
 			break;
 			
 		case FIREBULLET.HOMING   : // 完璧にホーミング
@@ -125,7 +129,7 @@ public class FireBullet : MonoBehaviour {
 				homingRotate = Quaternion.LookRotation (posTarget - transform.position);
 			}
 			Vector3 vecMove			= (homingRotate * Vector3.forward) * speed;
-			GetComponent<Rigidbody2D>().velocity 	= Quaternion.Euler (0.0f,0.0f,angle) * vecMove;
+			_rigidbody2D.velocity 	= Quaternion.Euler (0.0f,0.0f,angle) * vecMove;
 		}
 			break;
 			
@@ -141,7 +145,7 @@ public class FireBullet : MonoBehaviour {
 				homingAngleV += (homingAngleA * Time.fixedDeltaTime);
 				homingRotate = Quaternion.Euler (0.0f, 0.0f, homingAngle);
 			}
-			GetComponent<Rigidbody2D>().velocity = (homingRotate * Vector3.right) * speed;
+			_rigidbody2D.velocity = (homingRotate * Vector3.right) * speed;
 			break;
 		}
 

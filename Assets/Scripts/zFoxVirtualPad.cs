@@ -218,7 +218,7 @@ public class zFoxVirtualPad : MonoBehaviour {
 		if (vertical   < -1.0f) vertical = -1.0f;
 		if (vertical   >  1.0f) vertical =  1.0f;
 		
-		//Debug.Log (string.Format(">>> horizontal : {0},{1}",horizontal,Mathf.Abs (horizontal)) );
+		//Debug.LogFormat (">>> horizontal : {0},{1}",horizontal,Mathf.Abs (horizontal) );
 		if (Mathf.Abs (horizontal) < horizontalStartVal) {
 			horizontal = 0.0f;
 		}

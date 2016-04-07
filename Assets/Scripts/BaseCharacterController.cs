@@ -24,7 +24,8 @@ public class BaseCharacterController : MonoBehaviour {
 //	[System.NonSerialized] public float		freezStartTime 	= 0.0f;
 
 	// === キャッシュ ==========================================
-	[System.NonSerialized] public Animator	animator;
+	[System.NonSerialized] public Animator		_animator;
+	[System.NonSerialized] public Rigidbody2D	_rigidbody2D;
 	protected Transform		groundCheck_L;
 	protected Transform 	groundCheck_C;
 	protected Transform 	groundCheck_R;
@@ -62,7 +63,8 @@ public class BaseCharacterController : MonoBehaviour {
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	protected virtual void Awake () {
-		animator 			= GetComponent <Animator>();
+		_animator 			= GetComponent <Animator>();
+		_rigidbody2D 		= GetComponent <Rigidbody2D>();
 		groundCheck_L 		= transform.Find("GroundCheck_L");
 		groundCheck_C 		= transform.Find("GroundCheck_C");
 		groundCheck_R 		= transform.Find("GroundCheck_R");
@@ -72,7 +74,7 @@ public class BaseCharacterController : MonoBehaviour {
 		transform.localScale = new Vector3 (basScaleX, transform.localScale.y, transform.localScale.z);
 
 		activeSts 			= true;
-		gravityScale 		= GetComponent<Rigidbody2D>().gravityScale;
+		gravityScale 		= _rigidbody2D.gravityScale;
 
 
 		groundCheckCollider [0] = new Collider2D[16];
@@ -160,7 +162,7 @@ public class BaseCharacterController : MonoBehaviour {
 //#endif
 
 		// キャラ個別の処理を実行
-		//Debug.Log(string.Format("ChrCom FixedUpdate {0} {1}",name,grounded));
+		//Debug.LogFormat("ChrCom FixedUpdate {0} {1}",name,grounded);
 		FixedUpdateCharacter (); 
 
 		// 乗り物チェック
@@ -180,7 +182,7 @@ public class BaseCharacterController : MonoBehaviour {
 			}
 		} else {
 			// 移動計算
-			//Debug.Log (">>>> " + string.Format("speedVx {0} y {1} g{2}",speedVx,rigidbody2D.velocity.y,grounded));
+			//Debug.LogFormat (">>>> speedVx {0} y {1} g{2}",speedVx,rigidbody2D.velocity.y,grounded);
 			GetComponent<Rigidbody2D>().velocity = new Vector2 (speedVx + speedVxAddPower, GetComponent<Rigidbody2D>().velocity.y);
 		}
 
@@ -201,9 +203,9 @@ public class BaseCharacterController : MonoBehaviour {
 		}
 
 		// Veclocityの値をチェック
-		float vx = Mathf.Clamp (GetComponent<Rigidbody2D>().velocity.x, velocityMin.x, velocityMax.x);
-		float vy = Mathf.Clamp (GetComponent<Rigidbody2D>().velocity.y, velocityMin.y, velocityMax.y);
-		GetComponent<Rigidbody2D>().velocity = new Vector2(vx,vy);
+		float vx = Mathf.Clamp (_rigidbody2D.velocity.x, velocityMin.x, velocityMax.x);
+		float vy = Mathf.Clamp (_rigidbody2D.velocity.y, velocityMin.y, velocityMax.y);
+		_rigidbody2D.velocity = new Vector2(vx,vy);
 	}
 
 	protected virtual void FixedUpdateCharacter () {	
@@ -211,72 +213,72 @@ public class BaseCharacterController : MonoBehaviour {
 
 	// === コード（アニメーションイベント用コード） ===============
 	public virtual void AddForceAnimatorVx(float vx) {
-		//Debug.Log (string.Format("--- AddForceAnimatorVx {0} ----------------",vx));
+		//Debug.LogFormat ("--- AddForceAnimatorVx {0} ----------------",vx);
 		if (vx != 0.0f) {
-			GetComponent<Rigidbody2D>().AddForce (new Vector2(vx * dir,0.0f));
+			_rigidbody2D.AddForce (new Vector2(vx * dir,0.0f));
 			addForceVxEnabled	= true;
 			addForceVxStartTime = Time.fixedTime;
 		}
 	}
 	
 	public virtual void AddForceAnimatorVy(float vy) {
-		//Debug.Log (string.Format("--- AddForceAnimatorVy {0} ----------------",vy));
+		//Debug.LogFormat ("--- AddForceAnimatorVy {0} ----------------",vy);
 		if (vy != 0.0f) {
-			GetComponent<Rigidbody2D>().AddForce (new Vector2(0.0f,vy));
+			_rigidbody2D.AddForce (new Vector2(0.0f,vy));
 			jumped = true;
 			jumpStartTime = Time.fixedTime;
 		}
 	}
 	
 	public virtual void AddVelocityVx(float vx) {
-		//Debug.Log (string.Format("--- AddVelocityVx {0} ----------------",vx));
+		//Debug.LogFormat ("--- AddVelocityVx {0} ----------------",vx);
 		addVelocityEnabled = true;
 		addVelocityVx = vx * dir;
 	}
 	public virtual void AddVelocityVy(float vy) {
-		//Debug.Log (string.Format("--- AddVelocityVy {0} ----------------",vy));
+		//Debug.LogFormat ("--- AddVelocityVy {0} ----------------",vy);
 		addVelocityEnabled = true;
 		addVelocityVy = vy;
 	}
 	
 	public virtual void SetVelocityVx(float vx) {
-		//Debug.Log (string.Format("--- setelocityVx {0} ----------------",vx));
+		//Debug.LogFormat ("--- setelocityVx {0} ----------------",vx);
 		setVelocityVxEnabled = true;
 		setVelocityVx = vx * dir;
 	}
 	public virtual void SetVelocityVy(float vy) {
-		//Debug.Log (string.Format("--- setVelocityVy {0} ----------------",vy));
+		//Debug.LogFormat ("--- setVelocityVy {0} ----------------",vy);
 		setVelocityVyEnabled = true;
 		setVelocityVy = vy;
 	}
 	
 	public virtual void SetLightGravity() {
-		//Debug.Log ("--- SetLightGravity ----------------");
-		GetComponent<Rigidbody2D>().velocity 	 = Vector2.zero;
-		GetComponent<Rigidbody2D>().gravityScale = 0.1f;
+		//Debug.LogFormat ("--- SetLightGravity ----------------");
+		_rigidbody2D.velocity 	 = Vector2.zero;
+		_rigidbody2D.gravityScale = 0.1f;
 	}
 	
 	public void EnableFreez() {
-		//Debug.Log ("--- EnableFreez ----------------");
+		//Debug.LogFormat ("--- EnableFreez ----------------");
 		//freez = true;
 		//freezStartTime = Time.fixedTime;
 	}
 	public void DisableFreez() {
-		//Debug.Log ("--- DisableFreez ----------------");
+		//Debug.LogFormat ("--- DisableFreez ----------------");
 		//freez = false;
 	}
 	
 	public void EnableSuperArmor() {
-		//Debug.Log ("--- EnableSuperArmor ----------------");
+		//Debug.LogFormat ("--- EnableSuperArmor ----------------");
 		superArmor = true;
 	}
 	public void DisableSuperArmor() {
-		//Debug.Log ("--- DisableSuperArmor ----------------");
+		//Debug.LogFormat ("--- DisableSuperArmor ----------------");
 		superArmor = false;
 	}
 	
 	public virtual void PlayAnimationSE(int i) {
-		//Debug.Log (string.Format("--- PlayAnimationSE {0} ----------------",i));
+		//Debug.LogFormat ("--- PlayAnimationSE {0} ----------------",i);
 		seAnimationList [i].Play ();
 	}
 
@@ -285,10 +287,10 @@ public class BaseCharacterController : MonoBehaviour {
 		if (n != 0.0f) {
 			dir 	= Mathf.Sign(n);
 			speedVx = speed * n;
-			animator.SetTrigger("Run");
+			_animator.SetTrigger("Run");
 		} else {
 			speedVx = 0;
-			animator.SetTrigger("Idle");
+			_animator.SetTrigger("Idle");
 		}
 	}
 
@@ -326,7 +328,7 @@ public class BaseCharacterController : MonoBehaviour {
 
 	// === コード（その他） ====================================
 	public virtual void Dead (bool gameOver) {
-		animator.SetTrigger ("Dead");
+		_animator.SetTrigger ("Dead");
 		activeSts = false;
 	}
 
