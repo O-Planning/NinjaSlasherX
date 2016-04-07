@@ -52,6 +52,7 @@ public class CameraFollow : MonoBehaviour
 		player 		= PlayerController.GetGameObject();
 		playerTrfm 	= player.transform;
 		playerCtrl  = player.GetComponent<PlayerController>();
+		_camera 	= Camera.main;
 	}
 
 	void LateUpdate () {
