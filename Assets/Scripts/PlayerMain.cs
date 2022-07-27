@@ -10,8 +10,7 @@ public class PlayerMain : MonoBehaviour {
 	bool 				actionEtcRun = true;
 
 	// === コード（Monobehaviour基本機能の実装） ================
-//	void Awake () {
-	void Start () {
+	void Awake () {
 		playerCtrl 		= GetComponent<PlayerController>();
 		vpad 			= GameObject.FindObjectOfType<zFoxVirtualPad> ();
 	}
@@ -56,7 +55,7 @@ public class PlayerMain : MonoBehaviour {
 			if (Input.GetAxisRaw ("Vertical") + vpad_vertical < 0.5f) {
 				playerCtrl.ActionAttack();
 			} else {
-				//Debug.LogFormat ("Vertical {0} {1}",Input.GetAxisRaw ("Vertical"),vp.vertical);
+				//Debug.Log (string.Format ("Vertical {0} {1}",Input.GetAxisRaw ("Vertical"),vp.vertical));
 				playerCtrl.ActionAttackJump();
 			}
 			return;

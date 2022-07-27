@@ -29,6 +29,7 @@ public class StageA_TimeEffect : MonoBehaviour {
 
 		Color st = Color.Lerp (backColorST_A, backColorST_B, t);
 		Color ed = Color.Lerp (backColorED_A, backColorED_B, t);
-		Stage_BackColor.SetColors (st, ed);
+		Stage_BackColor.startColor = st;
+		Stage_BackColor.endColor = ed;
 	}
 }

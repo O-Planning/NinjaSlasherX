@@ -10,7 +10,7 @@ public class MenuObject_Button : MonoBehaviour {
 	Vector3 			orgLocalScale;
 	Color				orgColor;
 
-	void Start() {
+	void Awake() {
 		menuButton = transform.Find ("Menu_Button").GetComponent<SpriteRenderer> ();
 	}
 

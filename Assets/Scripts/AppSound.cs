@@ -127,7 +127,7 @@ public class AppSound : MonoBehaviour {
 	void Update() {
 		// シーンチェンジをチェック
 		if (sceneName != SceneManager.GetActiveScene().name) {
-			sceneName  = SceneManager.GetActiveScene().name;
+			sceneName = SceneManager.GetActiveScene().name;
 
 			// ボリューム設定
 			fm.SetVolume("BGM",SaveData.SoundBGMVolume);

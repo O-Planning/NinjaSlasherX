@@ -83,8 +83,7 @@ public static class SaveData {
 						stageData.Add (uidItem.uid,true);
 					}
 				}
-				stageData.PlayerPrefsSetStringUTF8 ("StageData_" + SceneManager.GetActiveScene().name,
-													stageData.EncodeDataPackString ());
+				stageData.PlayerPrefsSetStringUTF8 ("StageData_" + SceneManager.GetActiveScene().name, stageData.EncodeDataPackString ());
 				//Debug.Log(stageData.EncodeDataPackString ());
 			}
 			{ // EventData

@@ -46,6 +46,6 @@ public class Menu_Pause : MonoBehaviour {
 	void Button_Exit() {
 		AppSound.instance.SE_MENU_CANCEL.Play ();
 		Time.timeScale = 1.0f;
-		SceneManager.LoadScene("Menu_Title");
+		SceneManager.LoadScene ("Menu_Title");
 	}
 }

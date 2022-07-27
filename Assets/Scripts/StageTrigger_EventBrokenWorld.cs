@@ -14,7 +14,7 @@ public class StageTrigger_EventBrokenWorld : MonoBehaviour {
 	
 	void OnTriggerEnter2D_PlayerEvent (GameObject go) {
 		GetComponent<BoxCollider2D> ().enabled = false;
-		DestroyObject (destroyObject);
+		Destroy (destroyObject);
 		Invoke("BrokenStepA",0.5f);
 		Invoke("BrokenStepB",1.0f);
 	}

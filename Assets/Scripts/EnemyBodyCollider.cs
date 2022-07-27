@@ -18,7 +18,7 @@ public class EnemyBodyCollider : MonoBehaviour {
 			if (other.tag == "PlayerArm") {
 				AnimatorStateInfo stateInfo = playerAnim.GetCurrentAnimatorStateInfo(0);
 				if (attackHash != stateInfo.fullPathHash) {
-					attackHash  = stateInfo.fullPathHash;
+					attackHash = stateInfo.fullPathHash;
 					enemyCtrl.ActionDamage ();
 
 					Camera.main.GetComponent<CameraFollow>().AddCameraSize(-0.01f,-0.3f);

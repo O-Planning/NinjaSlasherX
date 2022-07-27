@@ -14,7 +14,7 @@ public class EnemyMain_B : EnemyMain {
 	// === コード（AI思考処理） =================================
 	public override void FixedUpdateAI () {
 		// AIステート
-		//Debug.LogFormat (">>> aists {0}",aiState);
+//		Debug.Log (string.Format(">>> aists {0}",aiState)); // 常に表示すると遅くなるので注意
 		switch (aiState) {
 		case ENEMYAISTS.ACTIONSELECT	: // 思考の起点
 			// アクションの選択

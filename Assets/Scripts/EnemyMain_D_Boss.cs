@@ -65,7 +65,7 @@ public class EnemyMain_D_Boss : EnemyMain {
 		}
 
 		// AIステート
-		//Debug.LogFormat (">>> aists {0}",aiState);
+		//Debug.Log (string.Format(">>> aists {0}",aiState));
 		switch (aiState) {
 		case ENEMYAISTS.ACTIONSELECT	: // 思考の起点
 			// アクションの選択

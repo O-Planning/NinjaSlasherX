@@ -24,7 +24,6 @@ public class Menu_Title : MonoBehaviour {
 		PlayerController.initParam 			= true;
 		PlayerController.checkPointEnabled 	= false;
 
-
 		zFoxFadeFilter.instance.FadeOut (Color.white, 1.0f);
 		AppSound.instance.SE_MENU_OK.Play ();
 		jumpSceneName = "StageA";

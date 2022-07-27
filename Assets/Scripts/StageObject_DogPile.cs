@@ -31,9 +31,12 @@ public class StageObject_DogPile : MonoBehaviour {
 		if (flag) {
 			// 登録されている破壊物リストのオブジェクトを削除
 			foreach (GameObject destroyObject in destroyObjectList) {
-				destroyObject.AddComponent<Effect_FadeObject>();
-				destroyObject.SendMessage("FadeStart");
-				Destroy(destroyObject,1.0f);
+				if (destroyObject)
+				{
+					destroyObject.AddComponent<Effect_FadeObject>();
+					destroyObject.SendMessage("FadeStart");
+					Destroy(destroyObject, 1.0f);
+				}
 			}
 			// サウンドチェック＆サウンド再生
 			if (sound) {

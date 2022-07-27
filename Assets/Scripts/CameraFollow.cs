@@ -39,7 +39,6 @@ public class CameraFollow : MonoBehaviour
 	public Param param;
 
 	// === キャッシュ ==========================================
-	[System.NonSerialized] Camera _camera;
 	GameObject 		 	player;
 	Transform 		 	playerTrfm;
 	PlayerController 	playerCtrl;
@@ -52,7 +51,6 @@ public class CameraFollow : MonoBehaviour
 		player 		= PlayerController.GetGameObject();
 		playerTrfm 	= player.transform;
 		playerCtrl  = player.GetComponent<PlayerController>();
-		_camera 	= Camera.main;
 	}
 
 	void LateUpdate () {
@@ -60,8 +58,8 @@ public class CameraFollow : MonoBehaviour
 		float targetY 	= playerTrfm.position.y;
 		float pX 		= transform.position.x;
 		float pY 		= transform.position.y;
-		float screenOGSize = _camera.orthographicSize;
-		float screenPSSize = _camera.fieldOfView;
+		float screenOGSize = GetComponent<Camera>().orthographicSize;
+		float screenPSSize = GetComponent<Camera>().fieldOfView;
 
 		// ターゲットの設定
 		switch (param.tragetType) {
@@ -132,12 +130,12 @@ public class CameraFollow : MonoBehaviour
 		case CAMERAHOMING.STOP 			:
 			break;
 		}
-		transform.position 			= new Vector3 (pX,pY, transform.position.z);
-		_camera.orthographic 		= param.orthographicEnabled;
-		_camera.orthographicSize 	= screenOGSize + screenOGSizeAdd;
-		_camera.fieldOfView 		= screenPSSize + screenPSSizeAdd;
-		_camera.orthographicSize 	= Mathf.Clamp (_camera.orthographicSize,  2.5f,   10.0f);
-		_camera.fieldOfView			= Mathf.Clamp (_camera.fieldOfView     , 30.0f,  100.0f);
+		transform.position 		= new Vector3 (pX,pY, transform.position.z);
+		GetComponent<Camera>().orthographic 	= param.orthographicEnabled;
+		GetComponent<Camera>().orthographicSize = screenOGSize + screenOGSizeAdd;
+		GetComponent<Camera>().fieldOfView 		= screenPSSize + screenPSSizeAdd;
+		GetComponent<Camera>().orthographicSize = Mathf.Clamp (GetComponent<Camera>().orthographicSize,  2.5f,   10.0f);
+		GetComponent<Camera>().fieldOfView		= Mathf.Clamp (GetComponent<Camera>().fieldOfView     , 30.0f,  100.0f);
 
 		// カメラの特殊ズーム効果計算
 		screenOGSizeAdd *= 0.99f;
